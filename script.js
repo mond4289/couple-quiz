@@ -20,7 +20,7 @@
      ปล่อยเป็นค่าว่าง "" ไว้ = เว็บจะทำงานแบบ demo ด้วย localStorage
      (ใช้ทดสอบ UI ได้ก่อนที่ Apps Script จะพร้อม)
   ========================================================= */
-  const API_URL = "https://script.google.com/macros/s/AKfycbwb2cspgheQIvhdMDvZY89Yr5c7h_t4IMrEfGF5UsxIbTRTnbrgYSUidt2HdKwjdg87DQ/exec"; // เช่น "https://script.google.com/macros/s/AKfycb.../exec"
+  const API_URL = "https://script.google.com/macros/s/AKfycbwb2cspgheQIvhdMDvZY89Yr5c7h_t4IMrEfGF5UsxIbTRTnbrgYSUidt2HdKwjdg87DQ/exec";
 
   async function apiGet_(action, user) {
     const res = await fetch(`${API_URL}?action=${action}&user=${user}`);
@@ -108,8 +108,7 @@
     ]
   };
 
-  const PASTEL_CYCLE = ["#F6E9FF", "#E6F3FF", "#FFF0DE", "#E9FFF1", "#FFE9F0", "#EEF0FF"];
-
+  
   /* ---------------- state ---------------- */
   const state = {
     user: null,          // 'mond' | 'fan'
@@ -117,7 +116,6 @@
     lang: localStorage.getItem("oq_lang") || "lo",
     sound: localStorage.getItem("oq_sound") !== "off",
     qIndex: 0,
-    lastBgIndex: -1,
     questions: []         // filled in when entering the question flow for a user
   };
 
@@ -222,15 +220,6 @@
     deleteAnswersLocal(user); // clear the local copy/draft either way
   }
 
-  /* ---------------- random, non-repeating pastel background ---------------- */
-  function randomizeQuestionBg() {
-    let idx;
-    do { idx = Math.floor(Math.random() * PASTEL_CYCLE.length); }
-    while (idx === state.lastBgIndex);
-    state.lastBgIndex = idx;
-    $("#screen-question").style.background = PASTEL_CYCLE[idx];
-  }
-
   /* ---------------- question flow ---------------- */
   async function renderQuestion() {
     const list = state.questions;
@@ -241,7 +230,6 @@
     const answers = await getAnswers(state.user);
     const saved = answers[q.id];
     $("#answer-input").value = draft[q.id] ?? (saved ? saved.lo : "");
-    randomizeQuestionBg();
   }
 
   async function goToQuestionScreen() {
