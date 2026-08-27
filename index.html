@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>ຄຳຖາມຂອງເຮົາ · Our Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+Lao:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="purple" data-lang="lo">
+
+  <!-- ================= AUDIO ================= -->
+  <!-- ວາງໄຟລ໌ MP3 ຂອງທ່ານໄວ້ທີ່ assets/bgm.mp3 -->
+  <audio id="bgm" src="assets/bgm.mp3" loop preload="none"></audio>
+
+  <!-- ================= 1. WELCOME SCREEN ================= -->
+  <section id="screen-welcome" class="screen active" data-screen="welcome">
+    <div class="bg-blob blob-a"></div>
+    <div class="bg-blob blob-b"></div>
+    <div class="welcome-tap-area">
+      <img class="logo-welcome" src="assets/logo-welcome.svg" alt="logo">
+      <p class="welcome-hint" data-i18n="welcome_hint">ແຕະໜ້າຈໍເພື່ອເລີ່ມ</p>
+    </div>
+  </section>
+
+  <!-- ================= 2. USER SELECT + SETTINGS ================= -->
+  <section id="screen-select" class="screen" data-screen="select">
+    <header class="header-center">
+      <img class="logo-sm" src="assets/logo-header-center.svg" alt="logo">
+    </header>
+
+    <div class="select-buttons">
+      <button class="player-btn" id="btn-select-mond" aria-label="Mond">
+        <img src="assets/btn-mond.svg" alt="ມົນ">
+      </button>
+      <button class="player-btn" id="btn-select-fan" aria-label="Fan">
+        <img src="assets/btn-fan.svg" alt="ແຟນ">
+      </button>
+    </div>
+
+    <button class="fab-settings" id="btn-open-settings" aria-label="Settings">⚙</button>
+
+    <!-- Settings panel -->
+    <div class="sheet-overlay" id="settings-overlay">
+      <div class="sheet-panel">
+        <h3 data-i18n="settings_title">ຕັ້ງຄ່າ</h3>
+
+        <div class="setting-row">
+          <span data-i18n="settings_theme">ໂທນສີ</span>
+          <div class="theme-swatches">
+            <button class="swatch swatch-purple" data-theme-choice="purple" aria-label="Purple"></button>
+            <button class="swatch swatch-blue" data-theme-choice="blue" aria-label="Blue"></button>
+            <button class="swatch swatch-orange" data-theme-choice="orange" aria-label="Orange"></button>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <span data-i18n="settings_sound">ສຽງ</span>
+          <label class="toggle">
+            <input type="checkbox" id="toggle-sound" checked>
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          </label>
+        </div>
+
+        <div class="setting-row">
+          <span data-i18n="settings_lang">ພາສາ</span>
+          <div class="lang-switch">
+            <button class="lang-btn active" data-lang-choice="lo">ລາວ</button>
+            <button class="lang-btn" data-lang-choice="en">EN</button>
+          </div>
+        </div>
+
+        <button class="btn-close-sheet" id="btn-close-settings" data-i18n="close">ປິດ</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 3. PERSONAL DASHBOARD ================= -->
+  <section id="screen-dashboard" class="screen" data-screen="dashboard">
+    <header class="header-center">
+      <button class="btn-back" data-back-to="select">←</button>
+      <span class="dashboard-title" id="dashboard-username">ມົນ</span>
+    </header>
+
+    <div class="dashboard-cards">
+      <button class="dash-card" id="btn-go-answer">
+        <span class="dash-icon">✍️</span>
+        <span data-i18n="dash_answer">ຕອບຄຳຖາມ</span>
+      </button>
+      <button class="dash-card" id="btn-go-view">
+        <span class="dash-icon">📖</span>
+        <span data-i18n="dash_view">ເບິ່ງຄຳຕອບ</span>
+      </button>
+      <button class="dash-card dash-card-danger" id="btn-go-reset">
+        <span class="dash-icon">↺</span>
+        <span data-i18n="dash_reset">ລຶບຂໍ້ມູນ ແລະ ຕອບໃໝ່</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ================= RESUME PROMPT ================= -->
+  <div class="sheet-overlay" id="resume-overlay">
+    <div class="sheet-panel">
+      <h3 data-i18n="resume_title">ທ່ານຕອບຄ້າງໄວ້</h3>
+      <p data-i18n="resume_body">ທ່ານຕ້ອງການຕອບຕໍ່ຈາກເກົ່າ ຫຼື ເລີ່ມໃໝ່ທັງໝົດ?</p>
+      <div class="two-btn-row">
+        <button class="btn-secondary" id="btn-resume-restart" data-i18n="resume_restart">ເລີ່ມໃໝ່</button>
+        <button class="btn-primary" id="btn-resume-continue" data-i18n="resume_continue">ຕອບຕໍ່</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= RESET CONFIRM ================= -->
+  <div class="sheet-overlay" id="reset-overlay">
+    <div class="sheet-panel">
+      <h3 data-i18n="reset_title">ຢືນຢັນ​ການ​ລຶບ</h3>
+      <p data-i18n="reset_body">ຄຳຕອບຂອງທ່ານຈະຖືກລຶບເພື່ອເລີ່ມຕອບໃໝ່ ຢືນຢັນ ຫຼື ບໍ່?</p>
+      <div class="two-btn-row">
+        <button class="btn-secondary" id="btn-reset-cancel" data-i18n="cancel">ບໍ່ຢືນຢັນ</button>
+        <button class="btn-danger" id="btn-reset-confirm" data-i18n="confirm">ຢືນຢັນ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 4. QUESTION SCREEN ================= -->
+  <section id="screen-question" class="screen" data-screen="question">
+    <header class="header-split">
+      <button class="btn-back" data-back-to="dashboard">←</button>
+      <img class="logo-xs" src="assets/logo-header-left.svg" alt="">
+      <span class="question-progress" id="question-progress">1 / 10</span>
+      <img class="logo-xs" src="assets/logo-header-right.svg" alt="">
+    </header>
+
+    <div class="question-stage" id="question-stage">
+      <div class="question-card" id="question-card">
+        <p class="question-text" id="question-text">…</p>
+      </div>
+    </div>
+
+    <div class="answer-area">
+      <textarea id="answer-input" rows="3" data-i18n-placeholder="answer_placeholder" placeholder="ພິມຄຳຕອບຂອງທ່ານ..."></textarea>
+      <div class="nav-row">
+        <button class="btn-secondary" id="btn-q-prev" data-i18n="prev">ຍ້ອນກັບ</button>
+        <button class="btn-primary" id="btn-q-next" data-i18n="next">ຖັດໄປ</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONFIRM SUBMIT SCREEN ================= -->
+  <section id="screen-confirm" class="screen" data-screen="confirm">
+    <div class="confirm-stage">
+      <img class="logo-confirm" src="assets/logo-confirm.svg" alt="">
+      <p class="confirm-text" data-i18n="confirm_done">ຕອບຄຳຖາມຄົບແລ້ວ!</p>
+      <button class="btn-primary" id="btn-confirm-submit" data-i18n="confirm_button">ຢືນຢັນ</button>
+    </div>
+  </section>
+
+  <!-- ================= 5. VIEW ANSWERS SCREEN ================= -->
+  <section id="screen-view" class="screen" data-screen="view">
+    <header class="header-center">
+      <button class="btn-back" data-back-to="dashboard">←</button>
+      <img class="logo-sm" src="assets/logo-header-center.svg" alt="logo">
+    </header>
+    <div class="view-list" id="view-list">
+      <!-- cards injected by JS -->
+    </div>
+    <p class="empty-state" id="view-empty" data-i18n="view_empty" hidden>ຍັງບໍ່ມີຄຳຕອບເທື່ອ</p>
+  </section>
+
+  <!-- Answer detail popup -->
+  <div class="sheet-overlay" id="answer-detail-overlay">
+    <div class="detail-card">
+      <div class="detail-question" id="detail-question"></div>
+      <div class="detail-answer" id="detail-answer"></div>
+      <button class="btn-close-sheet" id="btn-close-detail" data-i18n="close">ປິດ</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
